@@ -10,6 +10,28 @@
                         "isEnabled": "Enabled"
                     },
 
+                    "chatSection": {
+                        "@": "Chat Settings",
+                        "globalMute": {
+                            "@": "Global Chat",
+                            "globalChatMuted": "Hide Global Chat",
+                            "allowedChatRanks": {
+                                "@": "Allowed ranks",
+                                "@Tooltip": "Toggles seeing specific ranks/roles with global chat disabled"
+                            },
+                            "allowedPlayers": "Allowed Players"
+                        },
+                        "playerMute": {
+                            "@": "Player Muting",
+                            "mutedPlayers": "Muted Players",
+                            "mutedGuilds": "Muted Guilds",
+                            "showMutedPlaceholder": {
+                                "@": "Show Muted Message Placeholder",
+                                "@Tooltip": "Replaces muted messages with a placeholder instead of hiding them (like Discord). Hover over it to read the message"
+                            }
+                        }
+                    },
+
                     "miscSection": {
                         "@": "Misc Settings",
                         "showOwnNametag": "Render Own Nametag",
