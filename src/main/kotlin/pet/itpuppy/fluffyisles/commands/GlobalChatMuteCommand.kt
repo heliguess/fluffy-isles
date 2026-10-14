@@ -6,7 +6,7 @@ import pet.itpuppy.fluffyisles.features.GlobalChatMute
 import pet.itpuppy.fluffyisles.utils.Comp
 import pet.itpuppy.utils.command.dsl.command
 
-object GlobalMuteCommand : ClientCommand{
+object GlobalChatMuteCommand : ClientCommand {
     override fun register() {
         ClientCommandRegistrationCallback.EVENT.register { dispatcher, context ->
             dispatcher.command(FluffyIsles.MOD_ID, context) {
