@@ -23,6 +23,8 @@ import pet.itpuppy.fluffyisles.utils.Comp.prefix
 
 object FluffyIsles : ModInitializer {
 	const val MOD_ID: String = "fluffy-isles"
+	const val ALT_ID: String = "fi"
+
 	val LOGGER: Logger = LoggerFactory.getLogger(MOD_ID)
 	lateinit var config: ModConfig
 
