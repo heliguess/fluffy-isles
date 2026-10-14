@@ -11,7 +11,7 @@ object GlobalChatMute {
 
     fun toggle(): Boolean {
         section.globalChatMuted = !section.globalChatMuted
-        FluffyIsles.saveConfig()
+        FluffyIsles.config.save()
         return section.globalChatMuted
     }
 

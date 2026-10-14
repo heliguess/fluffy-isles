@@ -1,5 +1,6 @@
 package pet.itpuppy.fluffyisles.config
 
+import me.shedaniel.autoconfig.AutoConfig
 import me.shedaniel.autoconfig.ConfigData
 import me.shedaniel.autoconfig.annotation.Config
 import me.shedaniel.autoconfig.annotation.ConfigEntry
@@ -18,4 +19,8 @@ class ModConfig : ConfigData {
 
     @ConfigEntry.Gui.CollapsibleObject
     var miscSection = MiscSection()
+
+    fun save() {
+        AutoConfig.getConfigHolder(ModConfig::class.java).save()
+    }
 }

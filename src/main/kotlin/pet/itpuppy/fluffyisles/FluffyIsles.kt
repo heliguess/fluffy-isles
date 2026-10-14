@@ -67,8 +67,4 @@ object FluffyIsles : ModInitializer {
 	fun clipboard(data: String) {
 		client.keyboardHandler.clipboard = data
 	}
-
-	fun saveConfig() {
-		AutoConfig.getConfigHolder(ModConfig::class.java).save()
-	}
 }
