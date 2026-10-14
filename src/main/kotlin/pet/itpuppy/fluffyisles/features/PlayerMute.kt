@@ -16,6 +16,7 @@ object PlayerMute {
     fun handle(message: Component): Boolean {
         if (!shouldBlock(message)) return true
         if (section.showMutedPlaceholder) showPlaceholder(message)
+
         return false
     }
 
@@ -33,12 +34,14 @@ object PlayerMute {
     fun mute(name: String): Boolean {
         if (section.mutedPlayers.any { it.equals(name, ignoreCase = true) }) return false
         section.mutedPlayers.add(name.lowercase())
+
         FluffyIsles.config.save()
         return true
     }
 
     fun unmute(name: String): Boolean {
         val removed = section.mutedPlayers.removeIf { it.equals(name, ignoreCase = true) }
+
         if (removed) FluffyIsles.config.save()
         return removed
     }
@@ -46,22 +49,27 @@ object PlayerMute {
     fun muteGuild(name: String): Boolean {
         if (section.mutedGuilds.any { it.equals(name, ignoreCase = true) }) return false
         section.mutedGuilds.add(name.lowercase())
+
         FluffyIsles.config.save()
         return true
     }
 
     fun unmuteGuild(name: String): Boolean {
         val removed = section.mutedGuilds.removeIf { it.equals(name, ignoreCase = true) }
+
         if (removed) FluffyIsles.config.save()
         return removed
     }
 
     private fun shouldBlock(message: Component): Boolean {
         if (section.mutedPlayers.isEmpty() && section.mutedGuilds.isEmpty()) return false
+
         val parsed = ChatMessageAPI.parse(message) ?: return false
         if (section.mutedPlayers.any { it.equals(parsed.sender, ignoreCase = true) }) return true
+
         if (section.mutedGuilds.isEmpty()) return false
         val guild = ChatMessageAPI.guildOf(message) ?: return false
+
         return section.mutedGuilds.any { it.equals(guild, ignoreCase = true) }
     }
 }
