@@ -2,7 +2,7 @@ package pet.itpuppy.fluffyisles.features
 
 import net.minecraft.network.chat.Component
 import pet.itpuppy.fluffyisles.FluffyIsles
-import pet.itpuppy.fluffyisles.api.ChatMessage
+import pet.itpuppy.fluffyisles.api.ChatMessageAPI
 import net.minecraft.ChatFormatting
 import pet.itpuppy.fluffyisles.utils.Comp
 import pet.itpuppy.fluffyisles.utils.Comp.withHoverText
@@ -58,9 +58,10 @@ object PlayerMute {
 
     private fun shouldBlock(message: Component): Boolean {
         if (section.mutedPlayers.isEmpty() && section.mutedGuilds.isEmpty()) return false
-        val parsed = ChatMessage.parse(message) ?: return false
+        val parsed = ChatMessageAPI.parse(message) ?: return false
         if (section.mutedPlayers.any { it.equals(parsed.sender, ignoreCase = true) }) return true
-        val guild = parsed.guild ?: return false
+        if (section.mutedGuilds.isEmpty()) return false
+        val guild = ChatMessageAPI.guildOf(message) ?: return false
         return section.mutedGuilds.any { it.equals(guild, ignoreCase = true) }
     }
 }

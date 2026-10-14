@@ -4,17 +4,14 @@ import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.HoverEvent
 import pet.itpuppy.fluffyisles.utils.FormatCodes
 
-object ChatMessage {
+object ChatMessageAPI {
     enum class Channel { GLOBAL, GUILD, PARTY, DM, DISCORD }
 
-    class Parsed(
+    data class Parsed(
         val channel: Channel,
         val sender: String,
-        val rank: ChatRank?,
-        private val component: Component,
-    ) {
-        val guild: String? by lazy { guildOf(component) }
-    }
+        val rank: ChatRankAPI.Rank? = null
+    )
 
     private val GLOBAL = Regex("""^([^\x00-\x7F]+)\s+(\w{1,16})\s+»\s""")
     private val CHANNEL = Regex("""^\W*(GUILD|PARTY)\W+(\w{1,16})\s+»\s""")
@@ -27,16 +24,16 @@ object ChatMessage {
         val clean = FormatCodes.strip(component.string)
 
         GLOBAL.find(clean)?.let {
-            return Parsed(Channel.GLOBAL, it.groupValues[2], ChatRank.fromSymbol(it.groupValues[1]), component)
+            return Parsed(Channel.GLOBAL, it.groupValues[2], ChatRankAPI.fromSymbol(it.groupValues[1]))
         }
         CHANNEL.find(clean)?.let {
-            return Parsed(Channel.valueOf(it.groupValues[1]), it.groupValues[2], null, component)
+            return Parsed(Channel.valueOf(it.groupValues[1]), it.groupValues[2])
         }
         DM_INCOMING.find(clean)?.let {
-            return Parsed(Channel.DM, it.groupValues[1], null, component)
+            return Parsed(Channel.DM, it.groupValues[1])
         }
         DISCORD_CHAT.find(clean)?.let {
-            return Parsed(Channel.DISCORD, it.groupValues[1], null, component)
+            return Parsed(Channel.DISCORD, it.groupValues[1])
         }
         return null
     }
@@ -47,7 +44,7 @@ object ChatMessage {
         return null
     }
 
-    private fun guildOf(component: Component): String? {
+    fun guildOf(component: Component): String? {
         val hover = findHoverText(component) ?: return null
         val text = FormatCodes.strip(hover.string)
         return GUILD_LINE.find(text)?.groupValues?.get(1)?.trim()

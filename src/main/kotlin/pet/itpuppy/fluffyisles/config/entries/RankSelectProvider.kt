@@ -6,7 +6,7 @@ import me.shedaniel.clothconfig2.api.AbstractConfigListEntry
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder
 import net.minecraft.network.chat.Component
 import pet.itpuppy.fluffyisles.FluffyIsles
-import pet.itpuppy.fluffyisles.api.ChatRank
+import pet.itpuppy.fluffyisles.api.ChatRankAPI
 import java.lang.reflect.Field
 
 @Target(AnnotationTarget.FIELD)
@@ -26,7 +26,7 @@ object RankSelectProvider : GuiProvider {
         val selected = field.get(config) as MutableList<String>
 
         val builder = ConfigEntryBuilder.create()
-        val toggles = ChatRank.entries.map { rank ->
+        val toggles = ChatRankAPI.Rank.entries.map { rank ->
             builder.startBooleanToggle(Component.literal("${rank.symbol} ${rank.displayName}"), rank.commandName in selected)
                 .setDefaultValue(false)
                 .setSaveConsumer { enabled ->
