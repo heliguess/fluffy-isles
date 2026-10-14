@@ -6,11 +6,15 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry
 import pet.itpuppy.fluffyisles.FluffyIsles
 import pet.itpuppy.fluffyisles.config.section.MiscSection
 import pet.itpuppy.fluffyisles.config.section.RarityHighlightSection
+import pet.itpuppy.fluffyisles.config.section.ChatSection
 
 @Config(name = FluffyIsles.MOD_ID)
 class ModConfig : ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     var rarityHighlightSection = RarityHighlightSection()
+
+    @ConfigEntry.Gui.CollapsibleObject
+    var chatSection = ChatSection()
 
     @ConfigEntry.Gui.CollapsibleObject
     var miscSection = MiscSection()

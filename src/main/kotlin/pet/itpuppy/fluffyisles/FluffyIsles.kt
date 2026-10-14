@@ -1,6 +1,7 @@
 package pet.itpuppy.fluffyisles
 
 import me.shedaniel.autoconfig.AutoConfig
+import me.shedaniel.autoconfig.AutoConfigClient
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer
 import net.fabricmc.api.ModInitializer
 import net.minecraft.ChatFormatting
@@ -13,6 +14,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import pet.itpuppy.fluffyisles.commands.ClientCommand
 import pet.itpuppy.fluffyisles.config.ModConfig
+import pet.itpuppy.fluffyisles.config.entries.RankSelect
+import pet.itpuppy.fluffyisles.config.entries.RankSelectProvider
 import pet.itpuppy.fluffyisles.events.ClientEvent
 import pet.itpuppy.fluffyisles.utils.Comp
 import pet.itpuppy.fluffyisles.utils.Comp.of
@@ -39,6 +42,8 @@ object FluffyIsles : ModInitializer {
 
 		AutoConfig.register(ModConfig::class.java, ::GsonConfigSerializer)
 		config = AutoConfig.getConfigHolder(ModConfig::class.java).config
+		AutoConfigClient.getGuiRegistry(ModConfig::class.java)
+			.registerAnnotationProvider(RankSelectProvider, RankSelect::class.java)
 
 		ClientCommand::class.sealedSubclasses
 			.mapNotNull { it.objectInstance }
@@ -59,5 +64,9 @@ object FluffyIsles : ModInitializer {
 
 	fun clipboard(data: String) {
 		client.keyboardHandler.clipboard = data
+	}
+
+	fun saveConfig() {
+		AutoConfig.getConfigHolder(ModConfig::class.java).save()
 	}
 }
