@@ -10,13 +10,13 @@ object ChatMessageEvent : ClientEvent {
         ClientReceiveMessageEvents.ALLOW_GAME.register { message, overlay ->
             overlay || allow(message)
         }
+
         ClientReceiveMessageEvents.ALLOW_CHAT.register { message, _, _, _, _ ->
             allow(message)
         }
     }
     
     private fun allow(message: Component): Boolean {
-        if (GlobalChatMute.shouldBlock(message)) return false
-        return PlayerMute.handle(message)
+        return !GlobalChatMute.shouldBlock(message) && PlayerMute.handle(message)
     }
 }
