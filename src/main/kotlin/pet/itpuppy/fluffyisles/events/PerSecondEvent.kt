@@ -2,8 +2,9 @@ package pet.itpuppy.fluffyisles.events
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.minecraft.client.Minecraft
-import pet.itpuppy.fluffyisles.api.*
+import pet.itpuppy.fluffyisles.api.ConnectionAPI
 import pet.itpuppy.fluffyisles.collectors.ScoreboardCollector
+import pet.itpuppy.fluffyisles.features.RichPresence
 
 object PerSecondEvent : ClientEvent {
     private var tickCounter = 0
@@ -14,11 +15,15 @@ object PerSecondEvent : ClientEvent {
     }
 
     private fun run(minecraft: Minecraft) {
-        if (minecraft.level == null || minecraft.player == null) return
+        if (minecraft.level == null || minecraft.player == null) {
+            tickCounter = 0
+            return
+        }
 
         if (tickCounter++ >= SECOND) {
             collectorCallback()
             apiCallback()
+            featureCallback()
 
             tickCounter = 0
         }
@@ -30,5 +35,9 @@ object PerSecondEvent : ClientEvent {
 
     private fun apiCallback() {
         ConnectionAPI.tick()
+    }
+
+    private fun featureCallback() {
+        RichPresence.tick()
     }
 }

@@ -17,6 +17,7 @@ import pet.itpuppy.fluffyisles.config.ModConfig
 import pet.itpuppy.fluffyisles.config.entries.RankSelect
 import pet.itpuppy.fluffyisles.config.entries.RankSelectProvider
 import pet.itpuppy.fluffyisles.events.ClientEvent
+import pet.itpuppy.fluffyisles.features.RichPresence
 import pet.itpuppy.fluffyisles.utils.Comp
 import pet.itpuppy.fluffyisles.utils.Comp.of
 import pet.itpuppy.fluffyisles.utils.Comp.prefix
@@ -54,6 +55,8 @@ object FluffyIsles : ModInitializer {
 		ClientEvent::class.sealedSubclasses
 			.mapNotNull { it.objectInstance }
 			.forEach { it.register() }
+
+		RichPresence.register()
 	}
 
 	fun id(path: String): Identifier = Identifier.fromNamespaceAndPath(MOD_ID, path)

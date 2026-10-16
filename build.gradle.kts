@@ -47,6 +47,8 @@ dependencies {
 	modApi(libs.cloth.config)
 
 	modRuntimeOnly(libs.devauth)
+
+	implementation(libs.kpresence)
 }
 
 loom {

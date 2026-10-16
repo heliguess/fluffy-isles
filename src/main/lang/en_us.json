@@ -17,7 +17,7 @@
                             "globalChatMuted": "Hide Global Chat",
                             "allowedChatRanks": {
                                 "@": "Allowed ranks",
-                                "@Tooltip": "Toggles seeing specific ranks/roles with global chat disabled"
+                                "@Tooltip": "Toggles seeing specific ranks/roles with global chat disabled."
                             },
                             "allowedPlayers": "Allowed Players"
                         },
@@ -27,9 +27,20 @@
                             "mutedGuilds": "Muted Guilds",
                             "showMutedPlaceholder": {
                                 "@": "Show Muted Message Placeholder",
-                                "@Tooltip": "Replaces muted messages with a placeholder instead of hiding them (like Discord). Hover over it to read the message"
+                                "@Tooltip": "Replaces muted messages with a placeholder instead of hiding them (like Discord). Hover over it to read the message."
                             }
                         }
+                    },
+
+                    "richPresenceSection": {
+                        "@": "Rich Presence Settings",
+                        "@Tooltip": [
+                            "Enables personalized Discord RPC that will show up in your profile.",
+                            "Requires a running Discord client on your device.",
+                            "§6Changing these settings will require you to re-enter the server to take effect!§r"
+                        ],
+
+                        "isEnabled": "Enabled"
                     },
 
                     "miscSection": {

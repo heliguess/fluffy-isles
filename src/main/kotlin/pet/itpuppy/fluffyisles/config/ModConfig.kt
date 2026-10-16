@@ -8,6 +8,7 @@ import pet.itpuppy.fluffyisles.FluffyIsles
 import pet.itpuppy.fluffyisles.config.section.MiscSection
 import pet.itpuppy.fluffyisles.config.section.RarityHighlightSection
 import pet.itpuppy.fluffyisles.config.section.ChatSection
+import pet.itpuppy.fluffyisles.config.section.RichPresenceSection
 
 @Config(name = FluffyIsles.MOD_ID)
 class ModConfig : ConfigData {
@@ -16,6 +17,10 @@ class ModConfig : ConfigData {
 
     @ConfigEntry.Gui.CollapsibleObject
     var chatSection = ChatSection()
+
+    @ConfigEntry.Gui.CollapsibleObject
+    @ConfigEntry.Gui.Tooltip
+    var richPresenceSection = RichPresenceSection()
 
     @ConfigEntry.Gui.CollapsibleObject
     var miscSection = MiscSection()
