@@ -1,14 +1,15 @@
 package pet.itpuppy.fluffyisles.collectors
 
+import net.minecraft.network.chat.MutableComponent
 import net.minecraft.world.scores.DisplaySlot
 import net.minecraft.world.scores.PlayerScoreEntry
 import net.minecraft.world.scores.PlayerTeam
 import pet.itpuppy.fluffyisles.FluffyIsles
 
 object ScoreboardCollector {
-    private var cached: List<String> = listOf()
+    private var cached: List<MutableComponent> = listOf()
 
-    private fun collect(): List<String> {
+    private fun collect(): List<MutableComponent> {
         val level = FluffyIsles.client.level ?: return listOf()
 
         val scoreboard = level.scoreboard
@@ -23,10 +24,10 @@ object ScoreboardCollector {
             .take(15)
             .mapTo(mutableListOf()) {
                 val team = scoreboard.getPlayersTeam(it.owner)
-                PlayerTeam.formatNameForTeam(team, it.ownerName()).string
+                PlayerTeam.formatNameForTeam(team, it.ownerName())
             }
 
-        lines.addFirst(objective.displayName.string)
+        lines.addFirst(objective.displayName.copy())
         return lines
     }
 
@@ -34,11 +35,11 @@ object ScoreboardCollector {
         cached = collect()
     }
 
-    fun getOrNull(index: Int): String? {
+    fun getOrNull(index: Int): MutableComponent? {
         return cached.getOrNull(index)
     }
 
-    fun getFull(): List<String> {
+    fun getFull(): List<MutableComponent> {
         return cached
     }
 }
