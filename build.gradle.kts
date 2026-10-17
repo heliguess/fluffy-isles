@@ -48,7 +48,7 @@ dependencies {
 
 	modRuntimeOnly(libs.devauth)
 
-	implementation(libs.kpresence)
+	includeImpl(libs.kpresence)
 }
 
 loom {
@@ -128,4 +128,9 @@ publishing {
 
 	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	repositories { }
+}
+
+fun DependencyHandlerScope.includeImpl(impl: Any) {
+	include(impl)
+	implementation(impl)
 }
