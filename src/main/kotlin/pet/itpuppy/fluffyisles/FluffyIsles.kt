@@ -16,6 +16,8 @@ import pet.itpuppy.fluffyisles.commands.ClientCommand
 import pet.itpuppy.fluffyisles.config.ModConfig
 import pet.itpuppy.fluffyisles.config.entries.RankSelect
 import pet.itpuppy.fluffyisles.config.entries.RankSelectProvider
+import pet.itpuppy.fluffyisles.config.entries.SkillSelect
+import pet.itpuppy.fluffyisles.config.entries.SkillSelectProvider
 import pet.itpuppy.fluffyisles.events.ClientEvent
 import pet.itpuppy.fluffyisles.features.RichPresence
 import pet.itpuppy.fluffyisles.utils.Comp
@@ -47,6 +49,8 @@ object FluffyIsles : ModInitializer {
 		config = AutoConfig.getConfigHolder(ModConfig::class.java).config
 		AutoConfigClient.getGuiRegistry(ModConfig::class.java)
 			.registerAnnotationProvider(RankSelectProvider, RankSelect::class.java)
+		AutoConfigClient.getGuiRegistry(ModConfig::class.java)
+			.registerAnnotationProvider(SkillSelectProvider, SkillSelect::class.java)
 
 		ClientCommand::class.sealedSubclasses
 			.mapNotNull { it.objectInstance }

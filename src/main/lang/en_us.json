@@ -43,6 +43,25 @@
                         "isEnabled": "Enabled"
                     },
 
+                    "expTrackerSection": {
+                        "@": "Exp Tracker",
+                        "isEnabled": "Show Exp/hour",
+                        "idleTimeoutSeconds": {
+                            "@": "Idle Timeout (seconds)",
+                            "@Tooltip": "Gaps between exp gains longer than this don't count towards the rate."
+                        },
+                        "hideAfterSeconds": {
+                            "@": "Hide Skill After (seconds)",
+                            "@Tooltip": "A skill disappears from the meter after this long without a gain."
+                        },
+                        "x": "HUD X",
+                        "y": "HUD Y",
+                        "hiddenSkills": {
+                            "@": "Shown skills",
+                            "@Tooltip": "Choose which skills appear in the Exp meter."
+                        }
+                    },
+
                     "miscSection": {
                         "@": "Misc Settings",
                         "showOwnNametag": "Render Own Nametag",
