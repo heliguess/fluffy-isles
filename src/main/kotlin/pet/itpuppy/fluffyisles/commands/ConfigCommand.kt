@@ -2,6 +2,7 @@ package pet.itpuppy.fluffyisles.commands
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonElement
 import com.mojang.serialization.DynamicOps
 import com.mojang.serialization.JsonOps
 import me.shedaniel.autoconfig.AutoConfigClient
@@ -12,12 +13,15 @@ import net.minecraft.nbt.NbtOps
 import net.minecraft.nbt.NbtUtils
 import net.minecraft.network.chat.ClickEvent
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.ComponentSerialization
 import net.minecraft.network.chat.HoverEvent
 import net.minecraft.resources.RegistryOps
 import net.minecraft.world.item.ItemStack
 import pet.itpuppy.fluffyisles.FluffyIsles
-import pet.itpuppy.fluffyisles.collectors.ScoreboardCollector
+import pet.itpuppy.fluffyisles.api.SkillsAPI
+import pet.itpuppy.fluffyisles.collectors.ActionBarCollector
 import pet.itpuppy.fluffyisles.config.ModConfig
+import pet.itpuppy.fluffyisles.storage.SkillProgressStore
 import pet.itpuppy.utils.command.dsl.command
 import java.io.BufferedOutputStream
 import java.io.DataOutput
@@ -31,6 +35,24 @@ import kotlin.jvm.optionals.getOrNull
 
 object ConfigCommand : ClientCommand {
     private val gson: Gson = GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create()
+
+    private fun flatten(element: JsonElement, font: String?, color: String?, out: MutableList<String>) {
+        if (element.isJsonPrimitive) {
+            out.addSegment(element.asString, font, color)
+        } else if (element.isJsonObject) {
+            val obj = element.asJsonObject
+            val f = obj.get("font")?.asString ?: font
+            val c = obj.get("color")?.asString ?: color
+            obj.get("text")?.asString?.let { text -> out.addSegment(text, f, c) }
+            obj.getAsJsonArray("extra")?.forEach { flatten(it, f, c, out) }
+        }
+    }
+
+    private fun MutableList<String>.addSegment(text: String, font: String?, color: String?) {
+        if (text.isEmpty()) return
+        val escaped = text.map { if (it.code in 32..126) it.toString() else "\\u%04X".format(it.code) }.joinToString("")
+        add("  font=${font ?: "-"} color=${color ?: "-"} text=$escaped")
+    }
 
     override fun register() {
         ClientCommandRegistrationCallback.EVENT.register { dispatcher, context ->
@@ -128,7 +150,42 @@ object ConfigCommand : ClientCommand {
                         }
                     }
                 }
+
+                "dev copy bossbar" executes {
+                    val events = FluffyIsles.client.gui.bossOverlay.events
+                    val lines = mutableListOf<String>()
+                    events.values.forEachIndexed { index, event ->
+                        lines.add("[$index] progress=${event.progress} color=${event.color} overlay=${event.overlay}")
+                        val json = ComponentSerialization.CODEC.encodeStart(JsonOps.INSTANCE, event.name).result().getOrNull()
+                        if (json != null) flatten(json, null, null, lines)
+                    }
+                    FluffyIsles.clipboard(lines.joinToString("\n"))
+                    FluffyIsles.message(Component.literal("Copied ${events.size} bossbars to clipboard!"))
+                }
+
+                "dev copy actionbar" executes {
+                    val message = ActionBarCollector.lastRaw
+                    if (message == null) {
+                        FluffyIsles.message(Component.literal("No action bar message received yet!"))
+                    } else {
+                        val lines = mutableListOf<String>()
+                        val ageMs = System.currentTimeMillis() - ActionBarCollector.lastReceivedAt
+                        lines.add("age=${ageMs}ms")
+                        lines.add("string=${message.string}")
+                        val json = ComponentSerialization.CODEC.encodeStart(JsonOps.INSTANCE, message).result().getOrNull()
+                        if (json != null) flatten(json, null, null, lines)
+                        FluffyIsles.clipboard(lines.joinToString("\n"))
+                        FluffyIsles.message(Component.literal("Copied last action bar to clipboard!"))
+                    }
+                }
+
+                "dev skills clear" executes {
+                    SkillProgressStore.clear()
+                    SkillsAPI.reset()
+                    FluffyIsles.message(Component.literal("Cleared stored skill data"))
+                }
             }
+
         }
     }
 }
