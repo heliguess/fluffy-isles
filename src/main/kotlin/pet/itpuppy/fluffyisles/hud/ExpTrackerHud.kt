@@ -10,8 +10,8 @@ import pet.itpuppy.fluffyisles.storage.SkillProgressStore
 import pet.itpuppy.fluffyisles.utils.Comp
 import pet.itpuppy.fluffyisles.utils.TextUtils.duration
 import pet.itpuppy.fluffyisles.utils.TextUtils.gradient
-import pet.itpuppy.fluffyisles.utils.TextUtils.number
-import pet.itpuppy.fluffyisles.utils.TextUtils.titleCase
+import pet.itpuppy.fluffyisles.utils.TextUtils.toFormattedNumber
+import pet.itpuppy.fluffyisles.utils.TextUtils.toTitleCase
 
 object ExpTrackerHud : HudWidget {
     private const val LINE_HEIGHT = 10
@@ -81,7 +81,7 @@ object ExpTrackerHud : HudWidget {
         return HudRegion(
             block.x, block.y, block.width, block.height,
             listOf(
-                Comp.of("Shift-click to reset ${titleCase(block.skill)}", ChatFormatting.YELLOW),
+                Comp.of("Shift-click to reset ${block.skill.toTitleCase()}", ChatFormatting.YELLOW),
                 Comp.of("To move the widget run /fi hud", ChatFormatting.GRAY),
             ),
         ) { ExpTracker.reset(block.skill) }
@@ -89,7 +89,7 @@ object ExpTrackerHud : HudWidget {
 
     private fun header(line: ExpTracker.Line): Component {
         val parts = mutableListOf<Component>(
-            Comp.of(titleCase(line.skill), ChatFormatting.GOLD).withStyle { it.withBold(true) }
+            Comp.of(line.skill.toTitleCase(), ChatFormatting.GOLD).withStyle { it.withBold(true) }
         )
         line.progress?.let { progress ->
             val tenths = if (progress.required > 0) progress.current * 1000 / progress.required else 0
@@ -98,21 +98,21 @@ object ExpTrackerHud : HudWidget {
             parts.add(Comp.of(" "))
             parts.add(
                 gradient(
-                    "${number(progress.current)}/${number(progress.required)}",
-                    boldLength = number(progress.current).length,
+                    "${progress.current.toFormattedNumber()}/${progress.required.toFormattedNumber()}",
+                    boldLength = progress.current.toFormattedNumber().length,
                 )
             )
         }
-        parts.add(Comp.of(" (+${number(line.lastGain)})", ChatFormatting.DARK_GRAY))
+        parts.add(Comp.of(" (+${line.lastGain.toFormattedNumber()})", ChatFormatting.DARK_GRAY))
         return Comp.build(*parts.toTypedArray())
     }
 
     private fun rate(line: ExpTracker.Line): Component {
         val parts = mutableListOf<Component>(
             Comp.of("Exp/hr: ", ChatFormatting.GRAY),
-            gradient(line.perHour?.let { number(it) } ?: "--"),
+            gradient(line.perHour?.toFormattedNumber() ?: "--"),
             Comp.of("    Total exp: ", ChatFormatting.GRAY),
-            gradient(number(line.total)),
+            gradient(line.total.toFormattedNumber()),
             Comp.of(" in ${duration(line.activeMs)}", ChatFormatting.GRAY),
         )
         if (line.paused) parts.add(Comp.of(" (Paused)", ChatFormatting.YELLOW))

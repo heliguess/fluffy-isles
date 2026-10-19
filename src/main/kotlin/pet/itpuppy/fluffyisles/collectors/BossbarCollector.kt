@@ -20,9 +20,9 @@ object BossbarCollector {
 
     private fun collect(): List<Segment> {
         val result = mutableListOf<Segment>()
-        events().forEach { event ->
+        for (event in events()) {
             val json = ComponentSerialization.CODEC.encodeStart(JsonOps.INSTANCE, event.name).result().getOrNull()
-                ?: return@forEach
+                ?: continue
             flatten(json, null, null, result)
         }
         return result
@@ -56,18 +56,18 @@ object BossbarCollector {
 
     private fun flatten(element: JsonElement, font: String?, color: String?, out: MutableList<Segment>) {
         if (element.isJsonPrimitive) {
-            add(element.asString, font, color, out)
+            out.addSegment(element.asString, font, color)
         } else if (element.isJsonObject) {
             val obj = element.asJsonObject
             val ownFont = obj.get("font")?.asString ?: font
             val ownColor = obj.get("color")?.asString ?: color
-            obj.get("text")?.asString?.let { add(it, ownFont, ownColor, out) }
+            obj.get("text")?.asString?.let { text -> out.addSegment(text, ownFont, ownColor) }
             obj.getAsJsonArray("extra")?.forEach { flatten(it, ownFont, ownColor, out) }
         }
     }
 
-    private fun add(text: String, font: String?, color: String?, out: MutableList<Segment>) {
+    private fun MutableList<Segment>.addSegment(text: String, font: String?, color: String?) {
         if (text.isEmpty() || font == SPACES_FONT) return
-        out.add(Segment(font ?: "", color, text))
+        add(Segment(font ?: "", color, text))
     }
 }

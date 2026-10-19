@@ -38,21 +38,22 @@ object ConfigCommand : ClientCommand {
 
     private fun flatten(element: JsonElement, font: String?, color: String?, out: MutableList<String>) {
         if (element.isJsonPrimitive) {
-            segment(element.asString, font, color, out)
+            out.addSegment(element.asString, font, color)
         } else if (element.isJsonObject) {
             val obj = element.asJsonObject
             val f = obj.get("font")?.asString ?: font
             val c = obj.get("color")?.asString ?: color
-            obj.get("text")?.asString?.let { segment(it, f, c, out) }
+            obj.get("text")?.asString?.let { text -> out.addSegment(text, f, c) }
             obj.getAsJsonArray("extra")?.forEach { flatten(it, f, c, out) }
         }
     }
 
-    private fun segment(text: String, font: String?, color: String?, out: MutableList<String>) {
+    private fun MutableList<String>.addSegment(text: String, font: String?, color: String?) {
         if (text.isEmpty()) return
         val escaped = text.map { if (it.code in 32..126) it.toString() else "\\u%04X".format(it.code) }.joinToString("")
-        out.add("  font=${font ?: "-"} color=${color ?: "-"} text=$escaped")
+        add("  font=${font ?: "-"} color=${color ?: "-"} text=$escaped")
     }
+
     override fun register() {
         ClientCommandRegistrationCallback.EVENT.register { dispatcher, context ->
             dispatcher.command(FluffyIsles.MOD_ID, context) {

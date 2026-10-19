@@ -47,7 +47,7 @@ object ActionBarAPI {
         restedTotalSeconds = null
     }
 
-    internal fun onMessage(newSegments: List<Segment>) {
+    fun onMessage(newSegments: List<Segment>) {
         segments = newSegments
         val joined = newSegments.joinToString("") { it.text }.trim()
         text = joined

@@ -48,12 +48,12 @@ object SkillsCollector {
         val hit = cache[index]
         if (hit != null && hit.stack === stack) return hit.skill
 
-        val skill = parse(stack)
+        val skill = parseStack(stack)
         cache[index] = Parsed(stack, skill)
         return skill
     }
 
-    private fun parse(stack: ItemStack): SkillsAPI.Skill? {
+    private fun parseStack(stack: ItemStack): SkillsAPI.Skill? {
         if (stack.isEmpty) return null
 
         val name = stack.get(DataComponents.CUSTOM_NAME)?.string?.trim()?.takeIf { it.isNotEmpty() } ?: return null

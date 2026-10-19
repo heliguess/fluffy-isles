@@ -9,7 +9,7 @@ object TextUtils {
     private const val GRADIENT_START = 0x6BFF6F
     private const val GRADIENT_END = 0xEDFF87
 
-    fun number(value: Long): String = String.format(Locale.ROOT, "%,d", value)
+    fun Long.toFormattedNumber(): String = String.format(Locale.ROOT, "%,d", this)
 
     fun parseAbbreviated(text: String): Long? {
         val clean = text.trim().replace(",", "")
@@ -35,8 +35,10 @@ object TextUtils {
         }
     }
 
-    fun titleCase(text: String): String =
-        text.lowercase().split(" ").joinToString(" ") { word -> word.replaceFirstChar { it.uppercaseChar() } }
+    fun String.toTitleCase(): String =
+        this.lowercase().split(" ").joinToString(" ") { word ->
+            word.replaceFirstChar { it.uppercaseChar() }
+        }
 
     fun gradient(text: String, boldLength: Int = 0): Component {
         val last = (text.length - 1).coerceAtLeast(1)

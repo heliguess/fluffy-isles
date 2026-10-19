@@ -11,7 +11,6 @@ import kotlin.math.pow
 object SkillsAPI {
     data class Skill(val name: String, val level: Int, val current: Long, val required: Long, val total: Long)
     enum class SkillType(val displayName: String) {
-
         SLAYER("Slayer"),
         COMBAT("Combat"),
         //MERCENARY("Mercenary"), (disabled)
@@ -70,7 +69,7 @@ object SkillsAPI {
         skills.clear()
     }
 
-    internal fun update(parsed: List<Skill>) {
+    fun update(parsed: List<Skill>) {
         parsed.forEach { skills[it.name.trim().uppercase()] = it }
         val snapshot = all
         listeners.forEach { it(snapshot) }

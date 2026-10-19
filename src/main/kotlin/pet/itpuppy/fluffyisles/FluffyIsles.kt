@@ -44,13 +44,7 @@ object FluffyIsles : ModInitializer {
 
 	override fun onInitialize() {
 		LOGGER.info("Woof!")
-
-		AutoConfig.register(ModConfig::class.java, ::GsonConfigSerializer)
-		config = AutoConfig.getConfigHolder(ModConfig::class.java).config
-		AutoConfigClient.getGuiRegistry(ModConfig::class.java)
-			.registerAnnotationProvider(RankSelectProvider, RankSelect::class.java)
-		AutoConfigClient.getGuiRegistry(ModConfig::class.java)
-			.registerAnnotationProvider(SkillSelectProvider, SkillSelect::class.java)
+		initConfig()
 
 		ClientCommand::class.sealedSubclasses
 			.mapNotNull { it.objectInstance }
@@ -61,6 +55,15 @@ object FluffyIsles : ModInitializer {
 			.forEach { it.register() }
 
 		RichPresence.register()
+	}
+
+	private fun initConfig() {
+		AutoConfig.register(ModConfig::class.java, ::GsonConfigSerializer)
+		config = AutoConfig.getConfigHolder(ModConfig::class.java).config
+
+		val guiRegistry = AutoConfigClient.getGuiRegistry(ModConfig::class.java)
+		guiRegistry.registerAnnotationProvider(RankSelectProvider, RankSelect::class.java)
+		guiRegistry.registerAnnotationProvider(SkillSelectProvider, SkillSelect::class.java)
 	}
 
 	fun id(path: String): Identifier = Identifier.fromNamespaceAndPath(MOD_ID, path)
