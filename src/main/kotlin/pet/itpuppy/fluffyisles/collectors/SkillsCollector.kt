@@ -4,8 +4,8 @@ import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
 import net.minecraft.core.component.DataComponents
 import net.minecraft.world.item.ItemStack
-import pet.itpuppy.fluffyisles.FluffyIsles
 import pet.itpuppy.fluffyisles.api.SkillsAPI
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
 
 object SkillsCollector {
     private class Parsed(val stack: ItemStack, val skill: SkillsAPI.Skill?)
@@ -22,7 +22,7 @@ object SkillsCollector {
     private var attempts = 0
 
     fun tick() {
-        val current = FluffyIsles.client.screen
+        val current = ClientUtils.screen
         if (current !== screen) {
             screen = current
             done = false
@@ -34,7 +34,7 @@ object SkillsCollector {
         val container = current as? AbstractContainerScreen<*> ?: return
         attempts++
 
-        val inventory = FluffyIsles.client.player?.inventory
+        val inventory = ClientUtils.player
         val skills = container.menu.slots.mapIndexedNotNull { index, slot ->
             if (slot.container === inventory) null else parsed(index, slot.item)
         }

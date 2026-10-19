@@ -5,6 +5,7 @@ import com.mojang.serialization.JsonOps
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.ComponentSerialization
 import pet.itpuppy.fluffyisles.FluffyIsles
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
 import kotlin.jvm.optionals.getOrNull
 
 object BossbarCollector {
@@ -16,7 +17,7 @@ object BossbarCollector {
     private var lastNames: List<Component> = listOf()
     private var lastKey: String? = null
 
-    private fun events() = FluffyIsles.client.gui.bossOverlay.events.values
+    private fun events() = ClientUtils.bossOverlay.events.values
 
     private fun collect(): List<Segment> {
         val result = mutableListOf<Segment>()

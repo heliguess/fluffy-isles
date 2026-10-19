@@ -6,6 +6,7 @@ import pet.itpuppy.fluffyisles.api.ChatMessageAPI
 import net.minecraft.ChatFormatting
 import pet.itpuppy.fluffyisles.utils.Comp
 import pet.itpuppy.fluffyisles.utils.Comp.withHoverText
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
 
 object PlayerMute {
     private val section get() = FluffyIsles.config.chatSection.playerMute
@@ -21,7 +22,7 @@ object PlayerMute {
     }
 
     private fun showPlaceholder(message: Component) {
-        FluffyIsles.client.gui.chat.addMessage(
+        ClientUtils.chat.addMessage(
             Comp.build(
                 Comp.of("["),
                 Comp.of("✖", ChatFormatting.RED),

@@ -22,6 +22,7 @@ import pet.itpuppy.fluffyisles.api.SkillsAPI
 import pet.itpuppy.fluffyisles.collectors.ActionBarCollector
 import pet.itpuppy.fluffyisles.config.ModConfig
 import pet.itpuppy.fluffyisles.storage.SkillProgressStore
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
 import pet.itpuppy.utils.command.dsl.command
 import java.io.BufferedOutputStream
 import java.io.DataOutput
@@ -58,12 +59,12 @@ object ConfigCommand : ClientCommand {
         ClientCommandRegistrationCallback.EVENT.register { dispatcher, context ->
             dispatcher.command(FluffyIsles.MOD_ID, context) {
                 opens {
-                    AutoConfigClient.getConfigScreen(ModConfig::class.java, FluffyIsles.client.screen).get()
+                    AutoConfigClient.getConfigScreen(ModConfig::class.java, ClientUtils.screen).get()
                 }
 
                 "dev item" {
                     fun <Type : Any> serializeHandItem(ops: DynamicOps<Type>): Type? {
-                        val item = FluffyIsles.client.player?.mainHandItem ?: return null
+                        val item = ClientUtils.player?.mainHandItem ?: return null
                         val ops = RegistryOps.create(ops, FluffyIsles.registry)
                         val result = ItemStack.OPTIONAL_CODEC.encodeStart(ops, item)
                         result.ifError { error ->
@@ -152,7 +153,7 @@ object ConfigCommand : ClientCommand {
                 }
 
                 "dev copy bossbar" executes {
-                    val events = FluffyIsles.client.gui.bossOverlay.events
+                    val events = ClientUtils.bossOverlay.events
                     val lines = mutableListOf<String>()
                     events.values.forEachIndexed { index, event ->
                         lines.add("[$index] progress=${event.progress} color=${event.color} overlay=${event.overlay}")

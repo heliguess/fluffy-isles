@@ -12,6 +12,7 @@ import pet.itpuppy.fluffyisles.utils.TextUtils.duration
 import pet.itpuppy.fluffyisles.utils.TextUtils.gradient
 import pet.itpuppy.fluffyisles.utils.TextUtils.toFormattedNumber
 import pet.itpuppy.fluffyisles.utils.TextUtils.toTitleCase
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
 
 object ExpTrackerHud : HudWidget {
     private const val LINE_HEIGHT = 10
@@ -46,7 +47,7 @@ object ExpTrackerHud : HudWidget {
         val needsSync = !SkillProgressStore.hasAny() || lines.any { it.progress == null }
         if (lines.isEmpty() && !needsSync) return HudSize(0, 0)
 
-        val font = FluffyIsles.client.font
+        val font = ClientUtils.font
         val found = mutableListOf<Block>()
         var width = 0
         var currentY = y

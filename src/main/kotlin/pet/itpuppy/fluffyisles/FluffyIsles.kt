@@ -5,7 +5,6 @@ import me.shedaniel.autoconfig.AutoConfigClient
 import me.shedaniel.autoconfig.serializer.GsonConfigSerializer
 import net.fabricmc.api.ModInitializer
 import net.minecraft.ChatFormatting
-import net.minecraft.client.Minecraft
 import net.minecraft.core.HolderLookup
 import net.minecraft.data.registries.VanillaRegistries
 import net.minecraft.network.chat.MutableComponent
@@ -23,6 +22,7 @@ import pet.itpuppy.fluffyisles.features.RichPresence
 import pet.itpuppy.fluffyisles.utils.Comp
 import pet.itpuppy.fluffyisles.utils.Comp.of
 import pet.itpuppy.fluffyisles.utils.Comp.prefix
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
 
 object FluffyIsles : ModInitializer {
 	const val MOD_ID: String = "fluffy-isles"
@@ -32,9 +32,7 @@ object FluffyIsles : ModInitializer {
 	lateinit var config: ModConfig
 
 	private val lookup by lazy { VanillaRegistries.createLookup() }
-
-	val registry: HolderLookup.Provider get() = client.connection?.registryAccess() ?: lookup
-	val client: Minecraft get() = Minecraft.getInstance()
+	val registry: HolderLookup.Provider get() = ClientUtils.connection?.registryAccess() ?: lookup
 
 	val prefix = Comp.build(
 		of("[", ChatFormatting.GRAY),
@@ -69,12 +67,12 @@ object FluffyIsles : ModInitializer {
 	fun id(path: String): Identifier = Identifier.fromNamespaceAndPath(MOD_ID, path)
 
 	fun message(component: MutableComponent) {
-		client.gui.chat.addMessage(
+		ClientUtils.chat.addMessage(
 			component.prefix(prefix)
 		)
 	}
 
 	fun clipboard(data: String) {
-		client.keyboardHandler.clipboard = data
+		ClientUtils.keyboardHandler.clipboard = data
 	}
 }

@@ -1,6 +1,7 @@
 package pet.itpuppy.fluffyisles.storage
 
 import pet.itpuppy.fluffyisles.FluffyIsles
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
 
 object SkillProgressStore {
     private const val SAVE_INTERVAL_MS = 30_000L
@@ -8,7 +9,7 @@ object SkillProgressStore {
     private var dirty = false
     private var lastSavedAt = 0L
 
-    private fun accountKey() = FluffyIsles.client.user.profileId.toString()
+    private fun accountKey() = ClientUtils.user.profileId.toString()
 
     private fun entries(): MutableMap<String, StoredProgress> =
         FluffyIsles.config.skillProgress.getOrPut(accountKey()) { mutableMapOf() }

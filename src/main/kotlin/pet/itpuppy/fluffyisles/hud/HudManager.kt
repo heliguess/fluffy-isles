@@ -4,6 +4,7 @@ import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.inventory.InventoryScreen
 import pet.itpuppy.fluffyisles.FluffyIsles
 import pet.itpuppy.fluffyisles.storage.HudPosition
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
 
 object HudManager {
     val widgets: List<HudWidget> by lazy {
@@ -12,7 +13,7 @@ object HudManager {
 
     fun positionOf(widget: HudWidget): HudPosition {
         val saved = FluffyIsles.config.hudPositions[widget.id] ?: HudPosition(widget.defaultX, widget.defaultY)
-        val window = FluffyIsles.client.window
+        val window = ClientUtils.window
         return HudPosition(
             saved.x.coerceIn(0, (window.guiScaledWidth - 20).coerceAtLeast(0)),
             saved.y.coerceIn(0, (window.guiScaledHeight - 10).coerceAtLeast(0)),
@@ -33,7 +34,7 @@ object HudManager {
     }
 
     fun render(graphics: GuiGraphics) {
-        val screen = FluffyIsles.client.screen
+        val screen = ClientUtils.screen
         if (screen is HudEditorScreen || screen is InventoryScreen) return
 
         renderWidgets(graphics)
@@ -55,7 +56,7 @@ object HudManager {
 
     fun renderHover(graphics: GuiGraphics, mouseX: Int, mouseY: Int) {
         val region = regionAt(mouseX, mouseY) ?: return
-        val font = FluffyIsles.client.font
+        val font = ClientUtils.font
 
         graphics.fill(region.x - 2, region.y - 2, region.x + region.width + 2, region.y + region.height + 2, 0x30FFFFFF)
 

@@ -4,13 +4,13 @@ import net.minecraft.network.chat.MutableComponent
 import net.minecraft.world.scores.DisplaySlot
 import net.minecraft.world.scores.PlayerScoreEntry
 import net.minecraft.world.scores.PlayerTeam
-import pet.itpuppy.fluffyisles.FluffyIsles
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
 
 object ScoreboardCollector {
     private var cached: List<MutableComponent> = listOf()
 
     private fun collect(): List<MutableComponent> {
-        val level = FluffyIsles.client.level ?: return listOf()
+        val level = ClientUtils.level ?: return listOf()
 
         val scoreboard = level.scoreboard
         val objective = scoreboard.getDisplayObjective(DisplaySlot.SIDEBAR) ?: return listOf()

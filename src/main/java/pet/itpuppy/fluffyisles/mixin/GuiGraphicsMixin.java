@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import pet.itpuppy.fluffyisles.FluffyIsles;
 import pet.itpuppy.fluffyisles.features.RarityHighlights;
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class GuiGraphicsMixin {
     ) {
         if (!FluffyIsles.config.getMiscSection().getHideEmptyTooltips()) return;
 
-        if (components.size() == 1 && components.getFirst().getWidth(FluffyIsles.INSTANCE.getClient().font) == 0) {
+        if (components.size() == 1 && components.getFirst().getWidth(ClientUtils.INSTANCE.getFont()) == 0) {
             ci.cancel();
         }
     }

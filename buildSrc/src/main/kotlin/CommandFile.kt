@@ -115,7 +115,7 @@ fun createCommandClass(parameters: Int, maxParameters: Int, isLast: Boolean): St
         append(it)
     }
     appendLine(" -> ")
-    indent(2).append("FluffyIsles.client.execute { FluffyIsles.client.setScreenAndShow(callback(")
+    indent(2).append("ClientUtils.execute { ClientUtils.setScreenAndShow(callback(")
     forArguments {
         if (it != "a") {
             append(", ")
@@ -191,6 +191,7 @@ fun createCommandFile(maxArguments: Int) = buildString {
         import com.mojang.brigadier.suggestion.SuggestionProvider
         import net.minecraft.commands.CommandBuildContext
         import pet.itpuppy.fluffyisles.FluffyIsles
+        import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
         import net.minecraft.client.gui.screens.Screen
 
         @DslMarker

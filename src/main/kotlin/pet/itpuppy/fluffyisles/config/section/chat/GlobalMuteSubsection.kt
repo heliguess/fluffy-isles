@@ -9,5 +9,4 @@ class GlobalMuteSubsection {
 
     @RankSelect
     var allowedChatRanks: MutableList<String> = mutableListOf()
-
 }

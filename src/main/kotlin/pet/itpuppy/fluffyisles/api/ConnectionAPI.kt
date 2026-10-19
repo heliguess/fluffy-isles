@@ -2,6 +2,7 @@ package pet.itpuppy.fluffyisles.api
 
 import pet.itpuppy.fluffyisles.FluffyIsles
 import pet.itpuppy.fluffyisles.collectors.ScoreboardCollector
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
 
 object ConnectionAPI {
     var onIsles: Boolean = false; private set
@@ -9,7 +10,7 @@ object ConnectionAPI {
     var version: String? = null; private set
 
     private fun updateOnIsles(): Boolean {
-        return FluffyIsles.client.connection?.serverData?.ip in setOf(
+        return ClientUtils.connection?.serverData?.ip in setOf(
             "play.skyblockisles.net",
             "skyblockisles.net"
         )

@@ -4,9 +4,9 @@ import com.google.gson.JsonElement
 import com.mojang.serialization.JsonOps
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.ComponentSerialization
-import pet.itpuppy.fluffyisles.FluffyIsles
 import pet.itpuppy.fluffyisles.api.ActionBarAPI
 import pet.itpuppy.fluffyisles.collectors.BossbarCollector.Segment
+import pet.itpuppy.fluffyisles.utils.helpers.ClientUtils
 import kotlin.jvm.optionals.getOrNull
 
 object ActionBarCollector {
@@ -40,7 +40,7 @@ object ActionBarCollector {
     }
 
     fun tick() {
-        val gui = FluffyIsles.client.gui
+        val gui = ClientUtils.gui
         val time = gui.overlayMessageTime
         val message = gui.overlayMessageString
 
