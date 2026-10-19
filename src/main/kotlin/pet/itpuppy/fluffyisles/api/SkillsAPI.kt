@@ -52,9 +52,9 @@ object SkillsAPI {
 
     fun get(name: String): Skill? = skills[name.trim().uppercase()]
 
-//    Exp needed to go from level to level+1: floor(1600 * ln(16) * 16^(level / 25 - 1)).
-//     Took this from https://skyblockisles.net/wiki/player-systems/skills-main
-//     if it doesn't work it's not my fault :plead:
+    // Exp needed to go from level to level+1: floor(1600 * ln(16) * 16^(level / 25 - 1)).
+    // Took this from https://skyblockisles.net/wiki/player-systems/skills-main
+    // if it doesn't work it's not my fault :plead:
     fun required(level: Int): Long =
         floor(SCALE * 16.0.pow(level / 25.0 - 1)).toLong()
 
