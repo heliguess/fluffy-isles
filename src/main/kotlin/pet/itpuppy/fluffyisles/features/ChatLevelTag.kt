@@ -22,30 +22,17 @@ object ChatLevelTag {
     }
 
     private fun insert(component: Component, sender: String, level: ChatMessageAPI.TotalLevel): MutableComponent? {
-        val copy = MutableComponent.create(component.contents).withStyle(component.style)
-        var inserted = false
+        val copy = component.copy()
+        val index = copy.siblings.indexOfFirst { it.string == sender }
+        if (index == -1) return null
 
-        for (sibling in component.siblings) {
-            val rebuilt = if (inserted) null else insert(sibling, sender, level)
-            if (rebuilt != null) {
-                copy.append(rebuilt)
-                inserted = true
-                continue
-            }
-
-            if (!inserted && FormatCodes.strip(sibling.string).trim() == sender) {
-                copy.append(tag(sibling, level))
-                inserted = true
-            }
-            copy.append(sibling)
-        }
-
-        return if (inserted) copy else null
+        copy.siblings.add(index, tag(copy.style, level))
+        return copy
     }
 
-    private fun tag(name: Component, level: ChatMessageAPI.TotalLevel): MutableComponent {
-        val hover = name.style.hoverEvent
-        val click = name.style.clickEvent
+    private fun tag(style: Style, level: ChatMessageAPI.TotalLevel): MutableComponent {
+        val hover = style.hoverEvent
+        val click = style.clickEvent
         val bracket = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY).withHoverEvent(hover).withClickEvent(click)
         val number = level.style.withHoverEvent(hover).withClickEvent(click)
 
