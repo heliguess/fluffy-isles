@@ -4,7 +4,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry
 import pet.itpuppy.fluffyisles.config.entries.SkillSelect
 
 class ExpTrackerSection {
-    var isEnabled: Boolean = true
+    var isEnabled: Boolean = false
 
     @ConfigEntry.Gui.Tooltip
     var idleTimeoutSeconds: Int = 60

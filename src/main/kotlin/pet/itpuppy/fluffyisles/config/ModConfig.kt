@@ -22,11 +22,11 @@ class ModConfig : ConfigData {
     var chatSection = ChatSection()
 
     @ConfigEntry.Gui.CollapsibleObject
-    @ConfigEntry.Gui.Tooltip
-    var richPresenceSection = RichPresenceSection()
+    var expTrackerSection = ExpTrackerSection()
 
     @ConfigEntry.Gui.CollapsibleObject
-    var expTrackerSection = ExpTrackerSection()
+    @ConfigEntry.Gui.Tooltip
+    var richPresenceSection = RichPresenceSection()
 
     @ConfigEntry.Gui.CollapsibleObject
     var miscSection = MiscSection()

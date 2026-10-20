@@ -2,6 +2,7 @@ package pet.itpuppy.fluffyisles.events
 
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.network.chat.Component
+import pet.itpuppy.fluffyisles.features.ChatLevelTag
 import pet.itpuppy.fluffyisles.features.GlobalChatMute
 import pet.itpuppy.fluffyisles.features.PlayerMute
 
@@ -13,6 +14,10 @@ object ChatMessageEvent : ClientEvent {
 
         ClientReceiveMessageEvents.ALLOW_CHAT.register { message, _, _, _, _ ->
             allow(message)
+        }
+
+        ClientReceiveMessageEvents.MODIFY_GAME.register { message, overlay ->
+            if (overlay) message else ChatLevelTag.modify(message)
         }
     }
     
